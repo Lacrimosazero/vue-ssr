@@ -22,9 +22,23 @@ const config = {
                 test: /\.css$/,
                 use: ['style-loader','css-loader']
             },
+            {
+                test:/\.jsx$/,
+                use:['babel-loader']
+            },
             {  //css预处理器
                 test:/\.styl/,
-                use:['style-loader','css-loader','stylus-loader']
+                use:[
+                    'style-loader',
+                    'css-loader',
+                    {
+                        loader:'postcss-loader',
+                        options:{
+                            sourceMap:true
+                        }
+                    },
+                    'stylus-loader'
+                ]
             },
             {
                 test:/\.(jpg|png|gif|jpeg|svg)$/,
@@ -60,8 +74,7 @@ if(isDev){
         port:8010,
         host:'0.0.0.0',
         overlay:{//显示webpack编译过程中的错误
-            errors:true,
-            
+            errors:true,  
         },
         hot:true,   //热加载
         //open:true,   //自动打开浏览器
