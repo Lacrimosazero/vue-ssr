@@ -26,7 +26,7 @@ const config = {
                 test:/\.jsx$/,
                 use:['babel-loader']
             },
-            {  //css预处理器
+            {  //css预处理器  stylus
                 test:/\.styl/,
                 use:[
                     'style-loader',
