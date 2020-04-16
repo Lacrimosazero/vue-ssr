@@ -20,7 +20,8 @@ export default {
     },
     methods:{
         deleteTodo(){
-            
+            //触发一个事件
+            this.$emit('del',this.todo.id)
         }
     }
 }

@@ -7,22 +7,29 @@
             placeholder="接下去要做什么？"
             @keyup.enter="addTodo"
          >
-         <Item :todo="todo"></Item>
-         <tabs :filter="filter"></tabs>
+         <Item 
+            :todo="todo"
+            v-for="todo in filteredTodos"
+            :key="todo.id"
+            @del="deleteTodo"
+         />
+         <tabs 
+            :filter="filter" 
+            :todos="todos"
+            @toggle="toggleFilter"
+            @clearAllCompleted="clearAllCompleted"
+        />
     </section>
-</template>
+</template> 
 
 <script>
 import Item from './item.vue'
 import Tabs from './tabs.vue'
+let id=0
 export default {
     data(){
         return{
-            todo:{
-                id:0,
-                content:'this is todo',
-                completed:false,
-            },
+            todos:[],
             filter:'all'
         }
     },
@@ -30,9 +37,33 @@ export default {
         Item,
         Tabs
     },
+    computed:{
+        filteredTodos(){  //被过滤过的todo
+            if(this.filter==='all'){
+                return this.todos 
+            }
+            const completed=this.filter==='completed'
+            return this.todos.filter(todo=>completed===todo.completed)
+        }
+    },
     methods:{
-        addTodo(){
+        addTodo(e){   //添加todo
+            this.todos.unshift({
+                id:id++,
+                content:e.target.value.trim(),
+                completed:false
+            })
+            e.target.value=''
+        },
+        deleteTodo(id){   //删除todo
+            this.todos.splice(this.todos.findIndex(todo=>todo.id===id),1)
 
+        },
+        toggleFilter(state){   //切换tab
+            this.filter=state
+        },
+        clearAllCompleted(){
+            this.todos=this.todos.filter(todo=>!todo.completed)
         }
     }
 }
