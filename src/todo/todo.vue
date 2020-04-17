@@ -1,12 +1,13 @@
 <template>
     <section class="real-app">
+        <!-- keyup.enter 键盘回车事件 -->
         <input
             type="text"
             class="add-input"
-            autofocus="autofocus"
+            autofocus="autofocus" 
             placeholder="接下去要做什么？"
             @keyup.enter="addTodo"
-         >
+         > 
          <Item 
             :todo="todo"
             v-for="todo in filteredTodos"
@@ -48,16 +49,16 @@ export default {
     },
     methods:{
         addTodo(e){   //添加todo
-            this.todos.unshift({
+            this.todos.unshift({ //unshift向数组的开头添加一个或多个元素，并返回新的长度
                 id:id++,
-                content:e.target.value.trim(),
+                content:e.target.value.trim(), //trim() 去除字符串的头尾空格
                 completed:false
             })
             e.target.value=''
         },
         deleteTodo(id){   //删除todo
+            //findIndex() 方法返回传入一个测试条件（函数）符合条件的数组第一个元素位置。
             this.todos.splice(this.todos.findIndex(todo=>todo.id===id),1)
-
         },
         toggleFilter(state){   //切换tab
             this.filter=state

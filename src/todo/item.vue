@@ -12,7 +12,8 @@
 
 <script>
 export default {
-    props:{
+  //父组件的数据需要通过 props 把数据传给子组件，子组件需要显式地用 props 选项声明 "prop"
+    props:{ 
         todo:{
             type:Object,
             required:true
@@ -20,7 +21,9 @@ export default {
     },
     methods:{
         deleteTodo(){
-            //触发一个事件
+            //子组件可以使用 $emit 触发父组件的自定义事件。
+            //vm.$emit( event, arg ); 触发当前实例上的事件
+            //vm.$on( event, fn ); 监听event事件后运行 fn； 
             this.$emit('del',this.todo.id)
         }
     }
