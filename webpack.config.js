@@ -8,6 +8,7 @@ const isDev=process.env.NODE_ENV==="development";
 
 //通过node模块操作，向外面暴露一个配置对象
 const config = {
+    mode:process.env.NODE_ENV||'production',
     target:'web',
     entry:path.join(__dirname,'src/index.js'),//打包入口  __dirname绝对路径
     output:{ //打包后的文件
@@ -46,7 +47,8 @@ const config = {
                 NODE_ENV:isDev?'"development"':'"production"'
             }
         }),
-        new HTMLPlugin()
+        new HTMLPlugin(),
+        
     ],
     //mode:'development'   //设置mode
 
@@ -83,6 +85,11 @@ if(isDev){
         new webpack.NoEmitOnErrorsPlugin()
     )
 }else{
+    config.entry={
+        app:path.join(__dirname,'src/index.js'),
+        vendor:['vue']
+    }
+    //hash   chunkhash
      config.output.filename='[name].[chunkhash:8].js'
      config.module.rules.push(
          {
@@ -102,8 +109,15 @@ if(isDev){
             })
         },
     )
+    optimization ={
+        splitChunks: {
+            chunks: 'all',
+        },
+        runtimeChunk: true
+    }
     config.plugins.push(
-        new ExtractPlugin('styles.[md5:contentHash:hex:8].css')
+        new ExtractPlugin('styles.[md5:contentHash:hex:8].css'),
+        
     )
 }
 
